@@ -1,9 +1,4 @@
-export function log(mssg: string) {
-    //@ts-ignore
-    print(mssg);
-}
-
-export type point = { x: number; y: number };
+import {point} from "./point";
 
 export const mapDimensions = (): { start: point; end: point } => {
     return {

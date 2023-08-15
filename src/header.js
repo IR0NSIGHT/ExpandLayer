@@ -1,11 +1,11 @@
-//script.param.mcVersion.type=integer
-//script.param.mcVersion.description=minecraft version 1.??
-//script.param.mcVersion.optional=false
-//script.param.mcVersion.default=19
-//script.param.mcVersion.displayName=minecraft version 1.
+//script.param.iterations.type=integer
+//script.param.iterations.description=how many blocks to expand
+//script.param.iterations.optional=false
+//script.param.iterations.default=20
+//script.param.iterations.displayName=iterations
 
-//script.param.pretty.type=boolean
-//script.param.pretty.description=Format the output to be more human readable text instead of JSON
-//script.param.pretty.optional=false
-//script.param.pretty.default=true
-//script.param.pretty.displayName=Format output nicely
+//script.param.chance.type=float
+//script.param.chance.description=Chance for a block to pass into the next layer.
+//script.param.chance.optional=false
+//script.param.chance.default=0.5
+//script.param.chance.displayName=Chance to pass

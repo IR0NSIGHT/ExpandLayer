@@ -6,6 +6,6 @@ declare const org: any; //org.pepsoft java package
 
 //these params have to match the header.js file!
 declare const params: {
-  mcVersion: number;
-  pretty: boolean;
+  chance: number;
+  iterations: number;
 };

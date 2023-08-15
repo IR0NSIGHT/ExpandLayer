@@ -1,7 +1,7 @@
 {
-  "name": "WpScriptTemplate",
+  "name": "ExpandLayer",
   "version": "1.0.1",
-  "description": "a template repo to develop worldpainter scripts in typescript",
+  "description": "expand the cyan layer on the map, mark new ones with RED",
   "main": "./src/index.js",
   "scripts": {
     "test": "npx jest src/",
