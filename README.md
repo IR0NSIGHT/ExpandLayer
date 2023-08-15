@@ -8,7 +8,7 @@ The script will generate layer by layer, like an onion, inside out
 downloads: https://github.com/IR0NSIGHT/ExpandLayer/releases  
 github: https://github.com/IR0NSIGHT/ExpandLayer
 
-![](PR\thumbnail.PNG)
+![](./PR/thumbnail.PNG)
 
 # Instructions
 
