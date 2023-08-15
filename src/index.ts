@@ -3,6 +3,7 @@ import {log} from "./log";
 import {annotateAll, annotationColor, getAnnotationAt} from "./annotate";
 import {getNeighbourPoints, point} from "./point";
 import {makeSet} from "./SeenSet";
+import {assert} from "./assert";
 
 log("Hello World!")
 log("script params: " + JSON.stringify(params))
@@ -35,10 +36,13 @@ const getOpenList = () => {
 log("run parameters:" + JSON.stringify(params));
 
 let open: point[] = getOpenList();
-
 for (let i = 0; i < params.iterations; i++) {
     const next: point[] = [];
     const seen = makeSet()
+    open.forEach(seen.add)
+
+    open.forEach(p => assert(!canBeExpanded(p), "yeah its fucked 1"))
+
     log(`processing ${open.length} points in iteration ${i}`)
     for (let p of open) {
         const expansion = getNeighbourPoints(p).filter(seen.hasNot).filter(canBeExpanded)
@@ -48,9 +52,9 @@ for (let i = 0; i < params.iterations; i++) {
             continue;
         }
         next.push(...expansion)
-
+        annotateAll(expansion, expandedAnnotation)
+        expansion.forEach(p => assert(getAnnotationAt(p) == expandedAnnotation, "yeah its fucked"))
     }
-    annotateAll(open, expandedAnnotation)
     open = next;
 
 }
