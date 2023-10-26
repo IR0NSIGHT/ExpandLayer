@@ -29,7 +29,7 @@ const colorByIteration = (i: number): number => {
     return colorList[Math.max(0, Math.min(i, colorList.length - 1))];
 }
 
-const colorList = colorListFromString("red, Green, BLUE    , light-grey");
+const colorList = colorListFromString(params.colors);
 log("color list:" + colorList + " => " + colorList.map(colorNameByValue));
 for (let i = 0; i < params.iterations; i++) {
     log("layer " + i + " => " + colorByIteration(i))
@@ -40,7 +40,7 @@ for (let i = 0; i < params.iterations; i++) {
 const canBeExpanded = (p: point) => !isStartAnnotated(p) && getAnnotationAt(p) == 0
 
 const { iterations, chance, colors } = params
-log(`iterations: ${iterations}, chance: ${chance}`)
+log(`iterations: ${iterations}, chance: ${chance}, colors: ${colors}`)
 const getOpenList = () => {
     const open: point[] = []
     for (let x = start.x; x < end.x; x++) {
@@ -75,7 +75,7 @@ for (let i = 0; i < params.iterations; i++) {
         next.push(...expansion)
 
     }
-    layers.push({ points: next, idx: i });
+    layers.push({ points: [...open], idx: i });
     open = next;
 }
 
