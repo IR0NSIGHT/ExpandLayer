@@ -8,4 +8,5 @@ declare const org: any; //org.pepsoft java package
 declare const params: {
   chance: number;
   iterations: number;
+  colors: string;
 };
