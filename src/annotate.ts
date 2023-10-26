@@ -7,6 +7,7 @@ export const annotateAll = (points: point[], annotationColor: number) => {
 }
 
 export const annotationColor = {
+  NONE: 0,
   WHITE: 1,
   ORANGE: 2,
   MAGENTA: 3,
@@ -29,6 +30,7 @@ export const colorByValue = (id: number) : string=> {
     throw TypeError("color id outside of allowed range:" + id);
 
   return [
+    "NONE",
     "WHITE",
     "ORANGE",
     "MAGENTA",
@@ -44,13 +46,15 @@ export const colorByValue = (id: number) : string=> {
     "GREEN",
     "RED",
     "BLACK"
-  ][id-1]
+  ][id]
 }
 
 
 export const colorByString = (name: string): number | undefined => {
   const lowerCaseName = name.toLowerCase().split("-").join("");
   switch (lowerCaseName) {
+    case "none":
+      return annotationColor.NONE;
     case "white":
       return annotationColor.WHITE;
     case "orange":
