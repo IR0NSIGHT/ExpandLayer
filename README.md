@@ -9,10 +9,15 @@ downloads: https://github.com/IR0NSIGHT/ExpandLayer/releases
 github: https://github.com/IR0NSIGHT/ExpandLayer
 
 ![](./PR/thumbnail.PNG)
+![](./PR/example_4_ops.png)
+1. Top left: 20 iterations, 1 chance
+2. Top right: 1 iterations, 1 chance
+3. Bottom left: 20 iterations, 0.7 chance
+4. Bottom right: 20 iterations, 0.5 chance
 
 # Instructions
 
-## IMPORTANT: SAVE YOUR WORLD BEFORE RUNNING! THIS SCRIPT CAN CRASH WORLDPAINTER AND YOU LOOSE ALL UNSAVED CONTENT!
+### IMPORTANT: SAVE YOUR WORLD BEFORE RUNNING! THIS SCRIPT CAN CRASH WORLDPAINTER AND YOU LOOSE ALL UNSAVED CONTENT!
 
 1. download the newest release as a zip file puddler.js file
 2. unpack the zip folder somewhere
