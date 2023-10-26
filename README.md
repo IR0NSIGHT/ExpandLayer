@@ -25,8 +25,11 @@ github: https://github.com/IR0NSIGHT/ExpandLayer
    100x100 area is fine
 4. in WorldPainter, on the top toolbar, center-right, open "run script" and select ExpandLayer_v?_?_?.js from the folder where you
    unpacked the zip file
-5. Select your wanted parameters and run the script. Orange annotation will generate around the cyan annotations.
-
+5. Select your wanted parameters.
+- Chance: every block will have x chance to be skipped. 
+- Iterations: the script will find x layers of blocks surrounding the cyan annotations.
+- Colors: Red, Green, Blue will make the zero-layer (cyan) be red, the first be green and all the rest be blue. Use "None" to paint no annotation.
+6. Run the script. Colored annotation will generate around the cyan annotations.
 # Known issues
 There used to be a performance bug that caused the script to get stuck indefinetly and would cause a force quit of WP.
 Bug has been fixed, but if you encounter any issues, please report them on the github page.
