@@ -1,6 +1,6 @@
 {
   "name": "ExpandLayer",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "expand the cyan layer on the map, mark new ones with RED",
   "main": "./src/index.js",
   "scripts": {
