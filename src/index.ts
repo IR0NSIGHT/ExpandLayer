@@ -10,6 +10,7 @@ import {
 import {getNeighbourPoints, point} from "./point";
 import {makeSet} from "./SeenSet";
 import {timer } from "./Timer";
+import {findCyanPoints} from "./findAnnotated";
 log("Hello World!")
 log("script params: " + JSON.stringify(params))
 log("map dimensions:" + JSON.stringify(mapDimensions()))
@@ -37,15 +38,7 @@ const colorByIteration = (i: number): number => {
 
 const canBeExpanded = (p: point) => !isStartAnnotated(p) && getAnnotationAt(p) == 0
 const getOpenList = () => {
-    const open: point[] = []
-    for (let x = start.x; x < end.x; x++) {
-        for (let y = start.y; y < end.y; y++) {
-            const p = {x: x, y: y}
-            if (isStartAnnotated(p)) {
-                open.push(p)
-            }
-        }
-    }
+    const open: point[] = findCyanPoints()
     return open;
 }
 const {iterations, chance, colors} = params
