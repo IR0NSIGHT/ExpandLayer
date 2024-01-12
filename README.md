@@ -28,8 +28,13 @@ github: https://github.com/IR0NSIGHT/ExpandLayer
 5. Select your wanted parameters.
 - Chance: every block will have x chance to be skipped. 
 - Iterations: the script will find x layers of blocks surrounding the cyan annotations.
-- Colors: Red, Green, Blue will make the zero-layer (cyan) be red, the first be green and all the rest be blue. Use "None" to paint no annotation.
+- Colors: "Red, Green, Green, Green, Blue" will make the zero-layer (cyan) be red, then 3 green layers and all the rest be blue. Use "None" to paint no annotation.
 6. Run the script. Colored annotation will generate around the cyan annotations.
+
+## Advanced Color Banding
+![](./PR/color_banding.png)
+
+
 # Known issues
 There used to be a performance bug that caused the script to get stuck indefinetly and would cause a force quit of WP.
 Bug has been fixed, but if you encounter any issues, please report them on the github page.
