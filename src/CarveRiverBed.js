@@ -114,6 +114,14 @@ function isNotAnnotated(x, y) {
     return getAnnotationAt({x: x, y: y}) === annotationColor.NONE;
 }
 
+
+function cubicSpline(t) {
+    //interpolates x in 0 .. 1 with f(x) = -2x^3+3x^2 => smooth s curve equivalent to a bezier
+    var t2 = t * t;
+    var t3 = t2 * t;
+    return -2 * t3 + 3 * t2;
+}
+
 function markRed(x, y) {
     dimension.setLayerValueAt(org.pepsoft.worldpainter.layers.Annotations.INSTANCE, x, y, annotationColor.RED);
 }
@@ -127,7 +135,10 @@ function setHeight(point, height) {
 }
 
 function mergeHeight(x, height1, height2) {
-    var fraction = 3.2*(x*x*x)-4.8*x*x+2.6*x
+    //s curve interpolation
+    var fraction = -2.27*(x*x*x)+3.426*x*x+-0.1564*x
+    fraction = cubicSpline(x);
+    print(x + " -> " + fraction)
     return fraction * height1 + (1 - fraction) * height2
 }
 
@@ -140,6 +151,12 @@ function applyProfile(points, height, fraction) {
         setHeight(points[i], mergeHeight(fraction, heightAt(points[i]), height))
     }
 }
+
+for (var i = 0; i < 10; i++) {
+    print("t="+i+"->"+cubicSpline(i/10))
+}
+
+
 
 var borderSeenSet = makeSet();
 function getUnmarkedNeighbours(pointArray) {
