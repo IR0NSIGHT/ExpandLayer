@@ -1,11 +1,41 @@
 //script.name=RemoveCyanX v0.1 by IR0NSIGHT;
 //script.description=Mark all edges that are yellow and border magenta annotation with red annotation
 
-//script.param.chance.type=float
-//script.param.chance.description=Chance for any cyan block to not be removed. 0.5 = 50%
-//script.param.chance.optional=false
-//script.param.chance.default=0.5
-//script.param.chance.displayName=Chance to pass
+//script.param.bottomHeight.type=integer
+//script.param.bottomHeight.description=height of the bottom of the riverbed
+//script.param.bottomHeight.optional=false
+//script.param.bottomHeight.default=60
+//script.param.bottomHeight.displayName=Bottom height
+
+//script.param.transition.type=integer
+//script.param.transition.description=distance to transition between riverbed and original landscape
+//script.param.transition.optional=false
+//script.param.transition.default=100
+//script.param.transition.displayName=transition distance
+
+//script.param.profile.type=string
+//script.param.profile.description=Colors to use for each layer. last color will define all following layers.
+//script.param.profile.optional=false
+//script.param.profile.default=0,1,2,3,4,5
+//script.param.profile.displayName=Color list
+
+
+var profileBase = params["bottomHeight"];
+var transition = params["transition"]
+
+var profile = [];
+params["profile"].toLowerCase().split(" ").join("").split(",").map((function (str) {
+    //str is format 17x5 or 17 now
+    var vals = str.split("x")
+    if (vals.length===1)
+        profile.push(parseInt(vals[0]))
+    else
+        for (var i = 0; i < vals[1]; i++)
+            profile.push(parseInt(vals[0]))
+}))
+
+print("profile:"+ JSON.stringify(profile));
+
 
 //Chat gpt timer stuff
 var startTime,
@@ -138,7 +168,6 @@ function mergeHeight(x, height1, height2) {
     //s curve interpolation
     var fraction = -2.27*(x*x*x)+3.426*x*x+-0.1564*x
     fraction = cubicSpline(x);
-    print(x + " -> " + fraction)
     return fraction * height1 + (1 - fraction) * height2
 }
 
@@ -151,12 +180,6 @@ function applyProfile(points, height, fraction) {
         setHeight(points[i], mergeHeight(fraction, heightAt(points[i]), height))
     }
 }
-
-for (var i = 0; i < 10; i++) {
-    print("t="+i+"->"+cubicSpline(i/10))
-}
-
-
 
 var borderSeenSet = makeSet();
 function getUnmarkedNeighbours(pointArray) {
@@ -200,26 +223,14 @@ for (var x = start.x; x < end.x; x++) {
     }
 }
 
-var profile = [0,1,3]
-var profileBase = 57;
-var transition = 25
-
 function getProfileHeight(x) {
     x = Math.min(x, profile.length - 1)
     return profile[x] + profileBase
 }
 
+for (var i = 0; i < transition + profile.length ; i++) {
+    var fraction = transition !== 0 ? Math.max(0,i-profile.length)/transition : 0
 
-for (var i = 0; i < transition; i++) {
-    print("iterate border " + i + ", " + startPoints.length + " points")
-    startStopwatch()
-
-    applyProfile(startPoints, getProfileHeight(i), i / transition)
-    print("time to apply profile to " + startPoints.length + "points:")
-    updateTime()
+    applyProfile(startPoints, getProfileHeight(i), fraction)
     startPoints = getUnmarkedNeighbours(startPoints)
-    print("getting next layer:")
-    updateTime()
-    if (startPoints.length > 50000)
-        break;
 }
