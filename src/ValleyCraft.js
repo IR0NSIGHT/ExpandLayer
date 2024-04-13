@@ -14,10 +14,10 @@
 //script.param.transition.displayName=transition distance
 
 //script.param.profile.type=string
-//script.param.profile.description=Colors to use for each layer. last color will define all following layers.
+//script.param.profile.description=Riverbed profile. 0x5 means level 0 for 5 blocks.
 //script.param.profile.optional=false
-//script.param.profile.default=0,1,2,3,4,5
-//script.param.profile.displayName=Color list
+//script.param.profile.default=0,1,2,3,4x3,5x5
+//script.param.profile.displayName=river bed profile
 
 
 var profileBase = params["bottomHeight"];
@@ -196,7 +196,7 @@ function getUnmarkedNeighbours(pointArray) {
     }
 
     function pushIfWanted(point) {
-        if (borderSeenSet.hasNot(point))
+        if (borderSeenSet.hasNot(point) && isNotAnnotated(point.x,point.y))
             addBorder(point)
     }
 
