@@ -126,9 +126,18 @@ function setHeight(point, height) {
     dimension.setHeightAt(point.x, point.y, height)
 }
 
-function applyProfile(points, height) {
+function mergeHeight(x, height1, height2) {
+    var fraction = 3.2*(x*x*x)-4.8*x*x+2.6*x
+    return fraction * height1 + (1 - fraction) * height2
+}
+
+function heightAt(point) {
+    return dimension.getHeightAt(point.x, point.y)
+}
+
+function applyProfile(points, height, fraction) {
     for (var i = 0; i < points.length; i++) {
-        setHeight(points[i], height)
+        setHeight(points[i], mergeHeight(fraction, heightAt(points[i]), height))
     }
 }
 
@@ -143,6 +152,7 @@ function getUnmarkedNeighbours(pointArray) {
     function addBorder(point) {
         border.push(point)
         borderSeenSet.add(point)
+        markRed(point.x, point.y)
     }
 
     function pushIfWanted(point) {
@@ -173,12 +183,21 @@ for (var x = start.x; x < end.x; x++) {
     }
 }
 
-var profile = [62, 62, 62, 63, 63, 63, 64, 65, 66, 67, 69, 71, 75]
+var profile = [0,1,3]
+var profileBase = 57;
+var transition = 25
 
-for (var i = 0; i < profile.length; i++) {
+function getProfileHeight(x) {
+    x = Math.min(x, profile.length - 1)
+    return profile[x] + profileBase
+}
+
+
+for (var i = 0; i < transition; i++) {
     print("iterate border " + i + ", " + startPoints.length + " points")
     startStopwatch()
-    applyProfile(startPoints, profile[i])
+
+    applyProfile(startPoints, getProfileHeight(i), i / transition)
     print("time to apply profile to " + startPoints.length + "points:")
     updateTime()
     startPoints = getUnmarkedNeighbours(startPoints)
