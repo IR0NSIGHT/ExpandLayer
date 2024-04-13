@@ -1,14 +1,21 @@
-import { mapDimensions } from "./MapUtility";
-import { log } from "./log";
-import { annotateAll, annotationColor, colorByString, colorByValue as colorNameByValue, getAnnotationAt } from "./annotate";
-import { getNeighbourPoints, point } from "./point";
-import { makeSet } from "./SeenSet";
-
+import {mapDimensions} from "./MapUtility";
+import {log} from "./log";
+import {
+    annotateAll,
+    annotationColor,
+    colorByString,
+    colorByValue as colorNameByValue,
+    getAnnotationAt
+} from "./annotate";
+import {getNeighbourPoints, point} from "./point";
+import {makeSet} from "./SeenSet";
+import {timer } from "./Timer";
+import {findCyanPoints} from "./findAnnotated";
 log("Hello World!")
 log("script params: " + JSON.stringify(params))
 log("map dimensions:" + JSON.stringify(mapDimensions()))
 
-const { start, end } = mapDimensions()
+const {start, end} = mapDimensions()
 const startAnnotation = annotationColor.CYAN
 const expandedAnnotation = annotationColor.ORANGE
 const isStartAnnotated = (p: point) => {
@@ -17,7 +24,7 @@ const isStartAnnotated = (p: point) => {
 
 const colorListFromString = (usercolors: string): number[] => {
     const colorstrings = usercolors.toLowerCase().split(" ").join("").split(",");
-    const colorList = colorstrings.map(a => ({ name: a, value: colorByString(a) }));
+    const colorList = colorstrings.map(a => ({name: a, value: colorByString(a)}));
     const illegals = colorList.filter(a => a.value == undefined);
     if (illegals.length != 0)
         throw TypeError("unknown colors given:" + illegals.map(a => a.name).toString())
@@ -29,34 +36,29 @@ const colorByIteration = (i: number): number => {
     return colorList[Math.max(0, Math.min(i, colorList.length - 1))];
 }
 
+const canBeExpanded = (p: point) => !isStartAnnotated(p) && getAnnotationAt(p) == 0
+const getOpenList = () => {
+    const open: point[] = findCyanPoints()
+    return open;
+}
+const {iterations, chance, colors} = params
+
 const colorList = colorListFromString(params.colors);
-log("color list:" + colorList + " => " + colorList.map(colorNameByValue));
 for (let i = 0; i < params.iterations; i++) {
     log("layer " + i + " => " + colorByIteration(i))
 }
 
-
-
-const canBeExpanded = (p: point) => !isStartAnnotated(p) && getAnnotationAt(p) == 0
-
-const { iterations, chance, colors } = params
 log(`iterations: ${iterations}, chance: ${chance}, colors: ${colors}`)
-const getOpenList = () => {
-    const open: point[] = []
-    for (let x = start.x; x < end.x; x++) {
-        for (let y = start.y; y < end.y; y++) {
-            const p = { x: x, y: y }
-            if (isStartAnnotated(p)) {
-                open.push(p)
-            }
-        }
-    }
-    return open;
-}
+log("run parameters:" + params);
 
-log("run parameters:" + JSON.stringify(params));
+const myTimer = timer();
+myTimer.start()
 
 let open: point[] = getOpenList();
+
+const collectionTime = myTimer.stop()
+log("collection of points took:" + collectionTime/1000 + "s")
+myTimer.start();
 let layers = []
 for (let i = 0; i < params.iterations; i++) {
     const next: point[] = [];
@@ -75,13 +77,15 @@ for (let i = 0; i < params.iterations; i++) {
         next.push(...expansion)
 
     }
-    layers.push({ points: [...open], idx: i });
+    layers.push({points: [...open], idx: i});
     open = next;
 }
-
+log("calculation of expanded points took:" + myTimer.stop()/1000 + "s")
+myTimer.start()
 layers.reverse().forEach(l => {
-    const color =  colorByIteration(l.idx)
-    log("annotate layer " + l.idx + " with color " + colorNameByValue(color))
-    annotateAll(l.points, color)
-}
+        const color = colorByIteration(l.idx)
+        log("annotate layer " + l.idx + " with color " + colorNameByValue(color))
+        annotateAll(l.points, color)
+    }
 )
+log("painting expanded points took:" + myTimer.stop()/1000 + "s")
