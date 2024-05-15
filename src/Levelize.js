@@ -7,6 +7,12 @@
 //script.param.targetLevel.default=62
 //script.param.targetLevel.displayName=heightlevel
 
+//script.param.setWater.type=boolean
+//script.param.setWater.description=set water level instead of terrain height
+//script.param.setWater.optional=false
+//script.param.setWater.default=false
+//script.param.setWater.displayName=setWater
+
 var start = {x: 128 * dimension.getLowestX(), y: 128 * dimension.getLowestY()};
 var end = {
     x: 128 * (dimension.getHighestX() + 1) - 1,
@@ -43,9 +49,16 @@ function isCyan(x,y) {
     return getAnnotationAt({x: x, y: y}) === annotationColor.CYAN;
 }
 
+var useWaterLevel = params["setWater"];
+
 function setLevel(x,y) {
-    dimension.setHeightAt(x,y, targetHeight);
+    if (!useWaterLevel)
+        dimension.setHeightAt(x, y, targetHeight);
+    else
+        dimension.setWaterLevelAt(x, y, targetHeight)
 }
+
+
 var i = 0;
 for (var x = start.x; x < end.x; x++) {
     for (var y = start.y; y < end.y; y++) {
