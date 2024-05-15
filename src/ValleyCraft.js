@@ -1,5 +1,5 @@
-//script.name=RemoveCyanX v0.1 by IR0NSIGHT;
-//script.description=Mark all edges that are yellow and border magenta annotation with red annotation
+//script.name=ValleyCraft v0.1 by IR0NSIGHT;
+//script.description=Cut valleys and rivers along cyan annotations.
 
 //script.param.bottomHeight.type=integer
 //script.param.bottomHeight.description=height of the bottom of the riverbed
